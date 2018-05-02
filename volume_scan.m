@@ -50,7 +50,6 @@ cam.ROIPosition = [539 1302 522 286];
 
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...
     ,etl3_end, 3, 10, autofocus_diviation, autofocus_steps,save_path, 'sample');
-etl_arr
 disp('Doing MATLAB volume scan...');
 imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
 disp('Saving images to disk...');

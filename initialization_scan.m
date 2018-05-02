@@ -28,8 +28,7 @@ ni.set_mir(sample_x_arr(end));
 sample_y_arr(end) = autofocus(etl_end, autofocus_diviation, autofocus_steps ...
     , is_primary, is_primary_v, save_path, strcat(file_prefix,'-',int2str(num_sample),'.tif'));
 center_arr = linspace(sample_y_arr(1), sample_y_arr(end), num_sample);
-sample_y_arr
-center_arr
+
 % Autofocus on each sample point, using center_arr as center.
 for i=2:num_sample-1
     sample_y_arr(i) = autofocus(center_arr(i), autofocus_diviation, autofocus_steps ...

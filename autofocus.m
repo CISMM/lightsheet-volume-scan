@@ -25,7 +25,7 @@ for i = 1:num_sample
     % take a snapshot
     imgs{i} = getsnapshot(cam);
     % measue focus
-    focus_arr(i) = tenengrad(imgs{i});
+    focus_arr(i) = convolve_sobel(imgs{i});
     set_laser(0);
 end
 img_name = file_name(1:strfind(file_name, '.')-1);
