@@ -1,6 +1,10 @@
 function [peak_in_x, peak_in_y] = peak_in_gaussian(xarr, yarr, path, file)
 % Given x and y values, fit the curve with gaussian, and return the x where
 % the y peaks. The precision of x is set to 0.01.
+    if isempty(path)
+        file = '';
+    end
+    
     try
         f = fit(xarr', yarr', 'gauss1');
         x_space = 0.01;
@@ -17,12 +21,10 @@ function [peak_in_x, peak_in_y] = peak_in_gaussian(xarr, yarr, path, file)
         disp(strcat(file,'-Gaussian fitting failed. Use max value instead.'));
         f = fit(xarr', yarr', 'linear');
         [peak_in_y, ind] = max(yarr);
-        yarr
-        ind
         peak_in_x = xarr(ind);
     end
     
-    plot(f, xarr, yarr);
+    %plot(f, xarr, yarr);
     if ~isempty(path)
         saveas(gcf, strcat(path, file));
     end
