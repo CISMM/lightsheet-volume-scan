@@ -43,14 +43,17 @@ mir_start = -0.3;
 mir_end = 0.3;
 etl3_start = 4.6;
 etl3_end = 4.6;
-autofocus_diviation = 0.6;
-autofocus_steps = 20;
+autofocus_diviation = 0.3;
+autofocus_steps = 5;
 src.ExposureTime = 0.1;
 cam.ROIPosition = [539 1302 522 286];
 
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...
-    ,etl3_end, 3, 10, autofocus_diviation, autofocus_steps,save_path, 'sample');
-disp('Doing MATLAB volume scan...');
+    ,etl3_end, 3, 10, autofocus_diviation, autofocus_steps,save_path, 'in_scan');
+disp('Primary volume scan...');
 imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
-disp('Saving images to disk...');
-save_to_disk(imgs, save_path, 'volume.tif');
+save_to_disk(imgs, save_path, 'primary_volume.tif');
+
+disp('Secondary volume scan...');
+imgs = matlab_volume_scan(mir_arr, etl_arr, is_secondary, is_secondary_v);
+save_to_disk(imgs, save_path, 'secondary_volume.tif');

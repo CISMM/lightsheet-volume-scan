@@ -2,6 +2,11 @@ function best_v = autofocus(center, diviation, num_sample ...
                             ,wavelength, laser_v, save_path, file_name)
 %UNTITLED6 Summary of this function goes here
 %   Detailed explanation goes here
+
+function imout = filter(im)
+imout = imresize(imresize(im,0.333,'box'),3,'box');
+end
+
 global ni
 global cam
 
@@ -24,6 +29,7 @@ for i = 1:num_sample
     set_laser(laser_v);
     % take a snapshot
     imgs{i} = getsnapshot(cam);
+    imgs{i} = filter(imgs{i});
     % measue focus
     focus_arr(i) = convolve_sobel(imgs{i});
     set_laser(0);
