@@ -36,24 +36,26 @@ src = getselectedsource(cam);
 save_path = strcat('F:/Joe/volume_scan/', date, '/');
 is_primary = 561;
 is_secondary = 488;
-is_primary_v = 0.4;
-is_secondary_v = 0.4;
+is_primary_v = 3;
+is_secondary_v = 5;
 
-mir_start = -0.3;
-mir_end = 0.3;
-etl3_start = 4.6;
-etl3_end = 4.6;
+mir_start = 0.387;
+mir_end = 1.419;
+etl3_start = 3.97;
+etl3_end = 3.48;
 autofocus_diviation = 0.3;
 autofocus_steps = 5;
 src.ExposureTime = 0.1;
-cam.ROIPosition = [539 1302 522 286];
+num_sample = 3;
+num_scan = 25;
+cam.ROIPosition = [640, 391, 362, 354];
 
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...
-    ,etl3_end, 3, 10, autofocus_diviation, autofocus_steps,save_path, 'in_scan');
+    ,etl3_end, num_sample, num_scan, autofocus_diviation, autofocus_steps,save_path, 'init');
 disp('Primary volume scan...');
 imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
 save_to_disk(imgs, save_path, 'primary_volume.tif');
 
-disp('Secondary volume scan...');
-imgs = matlab_volume_scan(mir_arr, etl_arr, is_secondary, is_secondary_v);
-save_to_disk(imgs, save_path, 'secondary_volume.tif');
+% disp('Secondary volume scan...');
+% imgs = matlab_volume_scan(mir_arr, etl_arr, is_secondary, is_secondary_v);
+% save_to_disk(imgs, save_path, 'secondary_volume.tif');
