@@ -1,11 +1,11 @@
 exposure = 100;
-roi = [640, 391, 362, 354];
-mir = 0.387;
-etl3_center = 3.97;
+roi = [748, 540, 224, 309];
+mir = -0.83;
+etl3_center = 5.23;
 deviation = 0.5;
 step_size = 0.01;
 wavelength = 561;
-intensity = 3;
+intensity = 6;
 path = strcat('F:/Joe/volume_scan/', date);
 file = 'membrane_psf_561_endpoint.tif';
 

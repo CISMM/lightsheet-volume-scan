@@ -3,9 +3,13 @@ function best_v = autofocus(center, diviation, num_sample ...
 %UNTITLED6 Summary of this function goes here
 %   Detailed explanation goes here
 
-function imout = filter(im)
-imout = imresize(imresize(im,0.333,'box'),3,'box');
-end
+javaaddpath('./AutoPilot-1.0.jar');
+import autopilot.interfaces.*;
+
+% function imout = filter(im)
+% imout = AutoPilotM.dcts2(A,3);
+%imout = imresize(imresize(im,0.333,'box'),3,'box');
+%end
 
 global ni
 global cam
@@ -29,9 +33,10 @@ for i = 1:num_sample
     set_laser(laser_v);
     % take a snapshot
     imgs{i} = getsnapshot(cam);
-    imgs{i} = filter(imgs{i});
+    % imgs{i} = filter(imgs{i});
     % measue focus
-    focus_arr(i) = convolve_sobel(imgs{i});
+    %focus_arr(i) = convolve_sobel(imgs{i});
+    focus_arr(i) = AutoPilotM.dcts2(imgs{i},3);
     set_laser(0);
 end
 img_name = file_name(1:strfind(file_name, '.')-1);

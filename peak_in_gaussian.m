@@ -24,7 +24,7 @@ function [peak_in_x, peak_in_y, f] = peak_in_gaussian(xarr, yarr, path, file)
         peak_in_x = xarr(ind);
     end
     
-    %plot(f, xarr, yarr);
+    plot(f, xarr, yarr);
     if ~isempty(path)
         if ~exist(path, 'dir')
             mkdir(path);
