@@ -23,7 +23,7 @@ end
 lower = center - diviation / 2;
 upper = center + diviation / 2;
 etl_arr = linspace(lower, upper, num_sample);
-imgs = cell(num_sample);
+imgs = cell(1, num_sample);
 focus_arr = zeros(1, num_sample);
 
 for i = 1:num_sample
@@ -36,11 +36,12 @@ end
 img_name = file_name(1:strfind(file_name, '.')-1);
 %best_v = peak_in_gaussian(etl_arr, focus_arr, save_path, img_name);
 [success, best_v] = peak_in_fit('gauss1', etl_arr, focus_arr, save_path, img_name);
+pad_count = 1;
 while ~success
-    pad_count = 1;
+    fprintf("self correct - center:%.2f - %d\n", center, pad_count); 
     diff = etl_arr(2) - etl_arr(1);
-    pad_size = numele(etl_arr);
-    pad_imgs = cell(pad_size);
+    pad_size = numel(etl_arr);
+    pad_imgs = cell(1, pad_size);
     pad_focus_arr = zeros(1, pad_size);
     if focus_arr(1) > focus_arr(end)
         new_end = etl_arr(1) - diff;
@@ -50,7 +51,7 @@ while ~success
             ni.set_etl3(pad_etl_arr(i));
             set_laser(laser_v);
             pad_imgs{i} = getsnapshot(cam);
-            focus_arr(i) = AutoPilotM.dcts2(pad_imgs{i},3);
+            pad_focus_arr(i) = AutoPilotM.dcts2(pad_imgs{i},3);
             set_laser(0);
         end
         etl_arr = horzcat(pad_etl_arr, etl_arr);
@@ -64,7 +65,7 @@ while ~success
             ni.set_etl3(pad_etl_arr(i));
             set_laser(laser_v);
             pad_imgs{i} = getsnapshot(cam);
-            focus_arr(i) = AutoPilotM.dcts2(pad_imgs{i},3);
+            pad_focus_arr(i) = AutoPilotM.dcts2(pad_imgs{i},3);
             set_laser(0);
         end
         etl_arr = horzcat(etl_arr, pad_etl_arr);
@@ -76,6 +77,7 @@ while ~success
     end
     [success, best_v] = peak_in_fit('gauss1', etl_arr, focus_arr, save_path ...
         ,sprintf('%s-%d', img_name, pad_count));
+    pad_count = pad_count + 1;
 end
 
 save_to_disk(imgs, save_path, file_name);

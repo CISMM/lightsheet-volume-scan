@@ -17,7 +17,7 @@ switch wavelength
 end
 
 num_img = length(mir_arr);
-imgs = cell(num_img);
+imgs = cell(1, num_img);
 
 for i = 1:num_img
     ni.set_mir(mir_arr(i));
