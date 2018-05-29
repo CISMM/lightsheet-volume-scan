@@ -1,35 +1,33 @@
-function [peak_in_x, peak_in_y, f] = peak_in_fit(fitting, xarr, yarr, path, file)
-% Given x and y values, fit the curve with gaussian, and return the x where
-% the y peaks. The precision of x is set to 0.01.
-    if isempty(path)
-        file = '';
-    end
-    
+function [success, peak_in_x, peak_in_y, f] = peak_in_fit(fitting, xarr, yarr, path, file)
+% Fit the curve created by 'xarr' and 'yarr' with 'fitting'.
+% Return value is x location where the y peaks. The precision is 0.01.
     try
         f = fit(xarr', yarr', fitting);
         x_space = 0.01;
         num_x = (xarr(end) - xarr(1)) / x_space;
         new_x = linspace(xarr(1), xarr(end), abs(num_x)+1);
         [peak_in_y, locs] = findpeaks(f(new_x));
-        if isempty(locs)
-            [peak_in_y, ind] = max(yarr);
-            peak_in_x = xarrx(ind);
-        else
+        
+        if ~isempty(locs)
             peak_in_x = new_x(locs(1));
+            plot(f, xarr, yarr);
+            if ~isempty(path)
+                if ~exist(path, 'dir')
+                    mkdir(path);
+                end
+                saveas(gcf, strcat(path, file));
+            end
+            success = true;
+        else
+            % Fitting can go wrong without throwing any exception, and the
+            % returned peak location is empty.
+            % E.g. x:[1,2,3,4,5] y:[4,4,3,3,3] for 'gauss1'
+            success = false;
         end
+    % Exception is thrown if fitting fails.
+    % E.g. x:[1,2,3,4,5], y:[4,4,3,3,3] for 'gauss1'
     catch
-        disp(strcat(file,'-Fitting failed. Use max value instead.'));
-        f = fit(xarr', yarr', 'linear');
-        [peak_in_y, ind] = max(yarr);
-        peak_in_x = xarr(ind);
-    end
-    
-    %plot(f, xarr, yarr);
-    if ~isempty(path)
-        if ~exist(path, 'dir')
-            mkdir(path);
-        end
-        saveas(gcf, strcat(path, file));
+        success = false;
     end
 end
 
