@@ -17,7 +17,7 @@ end
 sample_x_arr = linspace(mir_start, mir_end, num_sample);
 sample_y_arr = zeros(1, num_sample);
 scan_x_arr = linspace(mir_start, mir_end, num_scan);
-scan_y_arr = zeros(1, num_scan);
+%scan_y_arr = zeros(1, num_scan);
 
 disp('Computing sample points...');
 % Autofocus on both end, and populate center_arr.
@@ -37,24 +37,30 @@ end
 
 plot(sample_x_arr, sample_y_arr);
 
-disp('Computing scan points...');
-% Determine scan x values lies in which sample interval, and interpolate
-% the y value.
-sample_interval = (mir_end - mir_start) / (num_sample-1);
-for i = 1:num_scan
-    quotient = fix((scan_x_arr(i) - sample_x_arr(1)) / sample_interval); 
-    if quotient < 0
-        quotient = 0;
-    elseif quotient >= num_sample-1
-        quotient = num_sample-2;
-    end
-    scan_y_arr(i) = interp1(sample_x_arr(quotient+1:quotient+2) ...
-        ,sample_y_arr(quotient+1:quotient+2), scan_x_arr(i) ...
-        ,'linear', 'extrap');
-    fprintf("x:(%.2f, %.2f)  y:(%.2f, %.2f) interpX:(%.2f, %.2f)\n" ...
-        ,sample_x_arr(quotient+1), sample_x_arr(quotient+2) ...
-        ,sample_y_arr(quotient+1), sample_y_arr(quotient+2) ...
-        ,scan_x_arr(i), scan_y_arr(i));
-end
+disp('Interpolate scanning points...');
+scan_y_arr = interp1(sample_x_arr, sample_y_arr, scan_x_arr ... 
+    ,'linear', 'extrap');
+
+sample_x_arr
+sample_y_arr
+scan_x_arr
+scan_y_arr
+
+% sample_interval = (mir_end - mir_start) / (num_sample-1);
+% for i = 1:num_scan
+%     quotient = fix((scan_x_arr(i) - sample_x_arr(1)) / sample_interval); 
+%     if quotient < 0
+%         quotient = 0;
+%     elseif quotient >= num_sample-1
+%         quotient = num_sample-2;
+%     end
+%     scan_y_arr(i) = interp1(sample_x_arr(quotient+1:quotient+2) ...
+%         ,sample_y_arr(quotient+1:quotient+2), scan_x_arr(i) ...
+%         ,'linear', 'extrap');
+%     fprintf("x:(%.2f, %.2f)  y:(%.2f, %.2f) interpX:(%.2f, %.2f)\n" ...
+%         ,sample_x_arr(quotient+1), sample_x_arr(quotient+2) ...
+%         ,sample_y_arr(quotient+1), sample_y_arr(quotient+2) ...
+%         ,scan_x_arr(i), scan_y_arr(i));
+% end
 end
 
