@@ -29,19 +29,20 @@ center_arr = linspace(sample_y_arr(1), sample_y_arr(end), num_sample);
 
 % Autofocus on each sample point, using center_arr as center.
 for i=2:num_sample-1
+    ni.set_mir(sample_x_arr(i));
     sample_y_arr(i) = autofocus(center_arr(i), autofocus_diviation, autofocus_steps ...
     ,is_primary, is_primary_v, save_path, strcat(file_prefix,'-',int2str(i),'.tif'));
 end
 
-plot(sample_x_arr, sample_y_arr);
-saveas(gcf, fullfile(path, 'initialization_scan_samples_plot'));
+fig = plot(sample_x_arr, sample_y_arr, 'o-');
+saveas(fig, fullfile(save_path, 'initialization_scan_samples_plot.png'));
 
 disp('Interpolate scanning points...');
 scan_y_arr = interp1(sample_x_arr, sample_y_arr, scan_x_arr ... 
     ,'linear', 'extrap');
 
-plot(scan_x_arr, scan_y_arr);
-saveas(gcf, fullfile(path, 'initialization_scan_scanning_plot'));
+fig = plot(scan_x_arr, scan_y_arr, 'o-');
+saveas(fig, fullfile(save_path, 'initialization_scan_scanning_plot.png'));
 disp('samples');
 sample_x_arr
 sample_y_arr

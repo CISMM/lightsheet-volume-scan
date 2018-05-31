@@ -15,19 +15,19 @@ src = getselectedsource(cam);
 save_path = fullfile('F:/Joe/volume_scan', datestr(now, 'yyyy-mm-dd_HH-MM'));
 is_primary = 561;
 is_secondary = 488;
-is_primary_v = 5;
-is_secondary_v = 3;
+is_primary_v = 3;
+is_secondary_v = 1;
 
-mir_start = -0.9;
-mir_end = 0.45;
-etl3_start = 5.65;
-etl3_end = 4.87;
+mir_start = -0.77;
+mir_end = 1.29;
+etl3_start = 5.5;
+etl3_end = 4.45;
 autofocus_diviation = 0.5;
 autofocus_steps = 5;
 src.ExposureTime = 0.1;
 num_sample = 10;
-num_scan = 10;
-cam.ROIPosition = [664, 416, 212, 504];
+num_scan = 50;
+cam.ROIPosition = [512, 608, 216, 432];
 
 %% Parameters for fast volume scan
 readout = 10;
