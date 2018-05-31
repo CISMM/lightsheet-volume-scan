@@ -2,8 +2,6 @@ function [scan_x_arr, scan_y_arr] = initialization_scan(mir_start, mir_end, etl_
                                       ,etl_end, num_sample, num_scan ...
                                       ,autofocus_diviation, autofocus_steps...
                                       ,save_path, file_prefix)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
 global ni;
 global is_primary;
 global is_primary_v;
@@ -36,13 +34,19 @@ for i=2:num_sample-1
 end
 
 plot(sample_x_arr, sample_y_arr);
+saveas(gcf, fullfile(path, 'initialization_scan_samples_plot'));
 
 disp('Interpolate scanning points...');
 scan_y_arr = interp1(sample_x_arr, sample_y_arr, scan_x_arr ... 
     ,'linear', 'extrap');
 
+plot(scan_x_arr, scan_y_arr);
+saveas(gcf, fullfile(path, 'initialization_scan_scanning_plot'));
+disp('samples');
 sample_x_arr
 sample_y_arr
+
+disp('scanning points');
 scan_x_arr
 scan_y_arr
 
