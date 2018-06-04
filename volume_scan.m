@@ -18,16 +18,16 @@ is_secondary = 488;
 is_primary_v = 3;
 is_secondary_v = 1;
 
-mir_start = -0.77;
-mir_end = 1.29;
-etl3_start = 5.5;
-etl3_end = 4.45;
+mir_start = -0.32;
+mir_end = 1.03;
+etl3_start = 4.74;
+etl3_end = 4.35;
 autofocus_diviation = 0.5;
 autofocus_steps = 5;
 src.ExposureTime = 0.1;
-num_sample = 10;
+num_sample = 5;
 num_scan = 50;
-cam.ROIPosition = [512, 608, 216, 432];
+cam.ROIPosition = [872, 812, 304, 376];
 
 %% Parameters for fast volume scan
 readout = 10;
