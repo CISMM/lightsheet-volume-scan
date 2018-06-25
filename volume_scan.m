@@ -15,26 +15,26 @@ src = getselectedsource(cam);
 save_path = fullfile('F:/Joe/volume_scan', datestr(now, 'yyyy-mm-dd_HH-MM'));
 is_primary = 561;
 is_secondary = 488;
-is_primary_v = 3;
+is_primary_v = 2;
 is_secondary_v = 1;
 
-mir_start = -0.32;
-mir_end = 1.03;
-etl3_start = 4.74;
-etl3_end = 4.35;
-autofocus_diviation = 0.5;
-autofocus_steps = 5;
-src.ExposureTime = 0.1;
-num_sample = 5;
-num_scan = 50;
-cam.ROIPosition = [872, 812, 304, 376];
+mir_start = -1.935;
+mir_end = -0.645;
+etl3_start = 6.23;
+etl3_end = 5.23;
+autofocus_diviation = 0.5;%ETL3 voltage range
+autofocus_steps = 5;%points in each microscan
+src.ExposureTime = 0.1;%in seconds
+num_sample = 5;%how many microscans
+num_scan = 50;%how many frames volume scan ends up being
+cam.ROIPosition = [354, 933, 166, 319];%region of interest you defined in HCImage Live [x0,y0,width, height]
 
 %% Parameters for fast volume scan
 readout = 10;
-exposure = 50;
+exposure = 80;
 volumetric_scan_intensity_488 = 6;
 volumetric_scan_intensity_561 = 8;
-output_path = 'C:/Users/efn/Desktop/volumetric_launcher';
+output_path = 'C:/Users/efn/Desktop/LabView_bin/lookup_tables';
 
 %% Start of experiment
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...

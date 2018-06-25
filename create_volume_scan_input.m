@@ -11,7 +11,7 @@ function out = create_volume_scan_input(...
 
 out = cell(1, 7);
 out{1, 1} = '#Row 1: Number of slices #Row 2:(On time, Off time) #Row 3: 488 and 561 intensities #Row 4: Mirror x voltages #Row 5: Mirror y voltages #Row 6: ETL3 voltages';
-out{1, 2} = numel(mirarr);
+out{1, 2} = numel(mir_arr);
 out{1, 3} = [exposure, readout];
 out{1, 4} = [intensity_488, intensity_561];
 out{1, 5} = mir_arr * -1;
