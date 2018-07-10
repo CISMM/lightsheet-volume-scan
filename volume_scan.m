@@ -22,37 +22,38 @@ mir_start = -1.935;
 mir_end = -0.645;
 etl3_start = 6.23;
 etl3_end = 5.23;
-autofocus_diviation = 0.5;%ETL3 voltage range
-autofocus_steps = 5;%points in each microscan
-src.ExposureTime = 0.1;%in seconds
-num_sample = 5;%how many microscans
-num_scan = 50;%how many frames volume scan ends up being
-cam.ROIPosition = [354, 933, 166, 319];%region of interest you defined in HCImage Live [x0,y0,width, height]
+autofocus_diviation = 0.5;              %ETL3 voltage range
+autofocus_steps = 5;                    %points in each microscan
+src.ExposureTime = 0.1;                 %in seconds
+num_sample = 5;                         %how many microscans
+num_scan = 50;                          %how many frames volume scan ends up being
+cam.ROIPosition = [354, 933, 166, 319]; %region of interest you defined in HCImage Live [x0,y0,width, height]
 
 %% Parameters for fast volume scan
-readout = 10;
-exposure = 80;
-volumetric_scan_intensity_488 = 6;
-volumetric_scan_intensity_561 = 8;
+fast_readout = 2;
+fast_exposure = 18;
+fast_scan_intensity_488 = 6;
+fast_scan_intensity_561 = 6;
 output_path = 'C:/Users/efn/Desktop/LabView_bin/lookup_tables';
+fast_scan_program = 'F:\Joe_nitrogen\projectes\LabView\builds\continuous_volumetric_scan\continuous_volumetric_scan';
 
-%% Start of experiment
+%% Initialization scan
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...
     ,etl3_end, num_sample, num_scan, autofocus_diviation, autofocus_steps,save_path, 'init');
 
-% plot(mir_arr, etl_arr);
+disp('Primary volume scan...');
+imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
+save_to_disk(imgs, save_path, 'primary_volume.tif');
 
-volume_scan_parameters = create_volume_scan_input( ...
-mir_arr, etl_arr, readout, exposure ...
-,volumetric_scan_intensity_488, volumetric_scan_intensity_561);
+%% Write lookup table to a text file
+fast_scan_parameters = create_volume_scan_input( ...
+mir_arr, etl_arr, fast_readout, fast_exposure ...
+,fast_scan_intensity_488, fast_scan_intensity_561);
 
-serialize_volume_scan_parameter(volume_scan_parameters, output_path);
+serialize_volume_scan_parameter(fast_scan_parameters, output_path);
 
-% Use the lookup table to slow scan a single volume (for debug or preview)
-% ------------------------------------------------------------------------
- disp('Primary volume scan...');
- imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
- save_to_disk(imgs, save_path, 'primary_volume.tif');
+%% Fast volume scan
+
 % 
 % disp('Secondary volume scan...');
 % imgs = matlab_volume_scan(mir_arr, etl_arr, is_secondary, is_secondary_v);
