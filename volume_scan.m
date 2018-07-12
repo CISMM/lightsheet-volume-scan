@@ -28,14 +28,16 @@ src.ExposureTime = 0.1;                 %in seconds
 num_sample = 5;                         %how many microscans
 num_scan = 50;                          %how many frames volume scan ends up being
 cam.ROIPosition = [354, 933, 166, 319]; %region of interest you defined in HCImage Live [x0,y0,width, height]
+lookup_table_output_path = 'C:/Users/efn/Desktop/LabView_bin/lookup_tables';
 
 %% Parameters for fast volume scan
 fast_readout = 2;
 fast_exposure = 18;
 fast_scan_intensity_488 = 6;
 fast_scan_intensity_561 = 6;
-output_path = 'C:/Users/efn/Desktop/LabView_bin/lookup_tables';
-fast_scan_program = 'F:\Joe_nitrogen\projectes\LabView\builds\continuous_volumetric_scan\continuous_volumetric_scan';
+AFM_scan_program = 'F:/Joe_nitrogen/projectes/LabView/builds/continuous_volumetric_scan/AFM_synched_volumetric_scan.exe';
+continuous_scan_program = 'F:/Joe_nitrogen/projectes/LabView/builds/continuous_volumetric_scan/continuous_volumetric_scan.exe';
+fast_output_folder = [save_path, '/', fast_volume_scan];
 
 %% Initialization scan
 [mir_arr, etl_arr] = initialization_scan(mir_start, mir_end, etl3_start ...
@@ -45,16 +47,19 @@ disp('Primary volume scan...');
 imgs = matlab_volume_scan(mir_arr, etl_arr, is_primary, is_primary_v);
 save_to_disk(imgs, save_path, 'primary_volume.tif');
 
-%% Write lookup table to a text file
+%% Save lookup table to a text file
 fast_scan_parameters = create_volume_scan_input( ...
 mir_arr, etl_arr, fast_readout, fast_exposure ...
 ,fast_scan_intensity_488, fast_scan_intensity_561);
 
-serialize_volume_scan_parameter(fast_scan_parameters, output_path);
+lookup_table_file = serialize_volume_scan_parameter(fast_scan_parameters, lookup_table_output_path);
 
-%% Fast volume scan
-
-% 
+%% Do slow volume scan  
 % disp('Secondary volume scan...');
 % imgs = matlab_volume_scan(mir_arr, etl_arr, is_secondary, is_secondary_v);
 % save_to_disk(imgs, save_path, 'secondary_volume.tif');
+
+%% Do fast volume scan
+do_fast_scan(AFM_synched_scan_program, lookup_table_file, 0, fast_output_folder);
+
+delete(cam);
