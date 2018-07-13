@@ -2,12 +2,11 @@ function set_camera_mode(mode)
 global cam;
 
 switch mode
-    case 'continuous_fast_scan'
-    case 'afm_fast_scan'
-        triggerconfig(cam, 'hardware', 'RisingEdge', 'EdgeTrigger');
-        cam.TriggerRepeat = 0;
+    case 'fast_scan'
+        fprintf('Set camera to External Level Trigger mode\n');
+        triggerconfig(cam, 'hardware', 'HighLevel', 'LevelTrigger');
     otherwise
-        fprintf("Unknown camera mode. Roll back to interl mode.");
+        fprintf("Unknown camera mode. Roll back to internal mode.");
         triggerconfig(cam, 'immediate');
 end
         

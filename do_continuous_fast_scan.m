@@ -1,28 +1,32 @@
-function do_fast_scan(scan_program, lookup_table, num_ims, out_dir)
+function do_continuous_fast_scan(scan_program, lookup_table, num_ims, out_dir)
 global cam;
 
-%cam = videoinput('hamamatsu', 1, 'MONO16_2048x2048_FastMode');
-
-% This is how many frames to expect before stop
-cam.FramesPerTrigger = num_ims;
-if num_ims == 0
-    cam.FramesPerTrigger = Inf;
+cam.FramesPerTrigger = 1;
 
 %% Open LabView program
 system([scan_program, ' ', lookup_table, ' &']);
 
 %% Setup camera
-set_camera_mode('continuous_fast_scan');
-start(cam);
+set_camera_mode('fast_scan');
 
-%% Generate a pulse to start the scanning
+if num_ims == 0
+    cam.TriggerRepeat = Inf;
+else
+    cam.TriggerRepeat = num_ims - 1;
+end
+
+start(cam);
+fprintf('Camera is ready\n');
+%% Generate a pulse from a NI USB device to start the scanning
 gen_pulse();
 
-%% Stop when we get enough volume data
-wait(cam);
+
+%% Wait until TriggerRepeat reaches the target
+wait(cam, 60);
+fprintf('Camera is stopped\n');
 
 %% Save video frames to disk
-[data,~,~] = getdata(cam);
+[data,~,~] = getdata(cam, num_ims);
 base = 'volume_scan';
 [~,~,~,N] = size(data);
 if ~exist(out_dir, 'dir')
