@@ -1,5 +1,5 @@
 function out = create_volume_scan_input(...
-    mir_arr, etl3_arr, readout, exposure, intensity_488, intensity_561)
+    mir_arr, etl3_arr, readout, exposure, intensity_488, intensity_561, delay)
 %% Exmaple file content
 % #Row 1: Number of slices #Row 2:(On time, Off time) #Row 3: 488 and 561 intensities #Row 4: Mirror x voltages #Row 5: Mirror y voltages #Row 6: ETL3 voltages
 % 50
@@ -12,7 +12,7 @@ function out = create_volume_scan_input(...
 out = cell(1, 7);
 out{1, 1} = '#Row 1: Number of slices #Row 2:(On time, Off time) #Row 3: 488 and 561 intensities #Row 4: Mirror x voltages #Row 5: Mirror y voltages #Row 6: ETL3 voltages';
 out{1, 2} = numel(mir_arr);
-out{1, 3} = [exposure, readout];
+out{1, 3} = [exposure, readout, delay];
 out{1, 4} = [intensity_488, intensity_561];
 out{1, 5} = mir_arr * -1;
 out{1, 6} = mir_arr;

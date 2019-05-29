@@ -28,7 +28,7 @@ function [success, peak_in_x, peak_in_y, f] = peak_in_fit(fitting, xarr, yarr, p
     % Exception is thrown if fitting fails.
     % E.g. x:[1,2,3,4,5], y:[4,4,3,3,3] for 'gauss1'
     catch
-        plot(f, xarr, yarr);
+        %plot(f, xarr, yarr);
         if ~isempty(path)
             if ~exist(path, 'dir')
                 mkdir(path);

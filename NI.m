@@ -31,7 +31,10 @@ classdef NI < handle
             % Dev1: 0-blanking, 1-488, 2-561
             % Dev4: 0-mirx, 1
             obj.session = daq.createSession('ni');
-            addAnalogOutputChannel(obj.session, 'Dev1', 0:2, 'Voltage');
+            % addAnalogOutputChannel(obj.session, 'Dev1', 0:2, 'Voltage');
+            addAnalogOutputChannel(obj.session, 'Dev1', 'ao0', 'Voltage');
+            addAnalogOutputChannel(obj.session, 'Dev1', 'ao2', 'Voltage');
+            addAnalogOutputChannel(obj.session, 'Dev1', 'ao4', 'Voltage');
             addAnalogOutputChannel(obj.session, 'Dev4', 0:2, 'Voltage');
             obj.out_data = [10, 0, 0, 0, 0, 4.76];
         end

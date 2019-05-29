@@ -38,7 +38,7 @@ img_name = file_name(1:strfind(file_name, '.')-1);
 [success, best_v] = peak_in_fit('gauss1', etl_arr, focus_arr, save_path, img_name);
 pad_count = 1;
 while ~success
-    fprintf("self correct - center:%.2f - %d\n", center, pad_count); 
+    fprintf("self correct - center:%.2f - %d\", center, pad_count); 
     diff = etl_arr(2) - etl_arr(1);
     pad_size = numel(etl_arr);
     pad_imgs = cell(1, pad_size);
